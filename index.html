@@ -129,7 +129,17 @@ footer{text-align:center;padding:25px;color:#98a2b3;font-size:11px}
 </main>
 <footer>SKYE HSE COPILOT • Intelligent HSE Support</footer>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+const SUPABASE_URL = "https://lwobrgsquuerhwmplaze.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_4iLGQP-3yZ-vw4Y3hpR7JA_OOc6LIoy";
+
+const supabase = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+</script>
 <script>
 function signIn(){
   const company=document.getElementById('company').value.trim();
