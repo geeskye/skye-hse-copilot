@@ -1,129 +1,542 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SKYE HSE Copilot</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
+<title>SKYE HSE Copilot</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    background: #f4f7fb;
+    color: #172033;
+    min-height: 100vh;
+}
+
+header {
+    background: linear-gradient(135deg, #071a3d, #0b3d91);
+    color: white;
+    padding: 22px 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+}
+
+.header-inner {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: white;
+    color: #0b3d91;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.brand h1 {
+    font-size: 22px;
+    letter-spacing: 0.5px;
+}
+
+.brand p {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-top: 3px;
+}
+
+.company-badge {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+}
+
+.company-badge strong {
+    display: block;
+    font-size: 14px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 25px 18px 50px;
+}
+
+.welcome {
+    margin-bottom: 25px;
+}
+
+.welcome h2 {
+    font-size: 27px;
+    margin-bottom: 7px;
+}
+
+.welcome p {
+    color: #667085;
+    font-size: 15px;
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 12px;
+    background: #eaf7ef;
+    color: #16723b;
+    padding: 7px 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #20a05a;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.card {
+    background: white;
+    border: 1px solid #e3e8f0;
+    border-radius: 15px;
+    padding: 20px;
+    min-height: 165px;
+    box-shadow: 0 3px 12px rgba(20,40,80,0.05);
+    transition: 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(20,40,80,0.09);
+}
+
+.card-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 11px;
+    background: #edf3ff;
+    color: #0b3d91;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    margin-bottom: 14px;
+}
+
+.card h3 {
+    font-size: 17px;
+    margin-bottom: 7px;
+}
+
+.card p {
+    color: #667085;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.card button {
+    margin-top: 15px;
+    border: none;
+    background: #0b3d91;
+    color: white;
+    padding: 9px 13px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.card button:hover {
+    background: #082f70;
+}
+
+.section-title {
+    margin: 35px 0 15px;
+    font-size: 18px;
+}
+
+.knowledge {
+    background: linear-gradient(135deg, #ffffff, #f7faff);
+    border: 1px solid #dce5f3;
+    border-radius: 16px;
+    padding: 22px;
+}
+
+.knowledge-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.knowledge h3 {
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+
+.knowledge p {
+    color: #667085;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.secure {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.secure-item {
+    background: white;
+    border: 1px solid #e2e7ef;
+    border-radius: 10px;
+    padding: 13px;
+    font-size: 12px;
+    color: #475467;
+}
+
+.secure-item strong {
+    display: block;
+    color: #172033;
+    margin-bottom: 4px;
+}
+
+.notice {
+    margin-top: 20px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #fff8e6;
+    border: 1px solid #f5df9c;
+    color: #725400;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #98a2b3;
+    font-size: 11px;
+}
+
+@media (max-width: 750px) {
+
+    .header-inner {
+        align-items: flex-start;
     }
 
-    body {
-      background: #f4f7fb;
-      color: #172033;
+    .company-badge {
+        font-size: 11px;
+        padding: 8px 10px;
     }
 
-    header {
-      background: #0b1f3a;
-      color: white;
-      padding: 20px;
-      text-align: center;
+    .grid {
+        grid-template-columns: 1fr;
     }
 
-    header h1 {
-      font-size: 28px;
-      margin-bottom: 5px;
+    .secure {
+        grid-template-columns: 1fr;
     }
 
-    header p {
-      color: #b9c7da;
-      font-size: 14px;
+    .welcome h2 {
+        font-size: 23px;
     }
 
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 20px;
+    .knowledge-top {
+        flex-direction: column;
+        align-items: flex-start;
     }
-
-    .card {
-      background: white;
-      border-radius: 14px;
-      padding: 30px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-    }
-
-    .card h2 {
-      margin-bottom: 10px;
-    }
-
-    .card p {
-      color: #667085;
-      margin-bottom: 25px;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 160px;
-      padding: 15px;
-      border: 1px solid #ccd3df;
-      border-radius: 10px;
-      font-size: 16px;
-      resize: vertical;
-    }
-
-    button {
-      margin-top: 15px;
-      background: #1463ff;
-      color: white;
-      border: none;
-      padding: 14px 22px;
-      border-radius: 9px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #0d4ed1;
-    }
-
-    #response {
-      margin-top: 25px;
-      padding: 20px;
-      background: #eef4ff;
-      border-radius: 10px;
-      display: none;
-    }
-
-    .tag {
-      display: inline-block;
-      background: #dbe7ff;
-      color: #1746a2;
-      padding: 6px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      margin-bottom: 12px;
-    }
-  </style>
+}
+</style>
 </head>
 
 <body>
 
-  <header>
-    <h1>SKYE</h1>
-    <p>HSE Copilot</p>
-  </header>
+<header>
+    <div class="header-inner">
 
-  <div class="container">
+        <div class="brand">
+            <div class="logo">S</div>
 
-    <div class="card">
+            <div>
+                <h1>SKYE HSE COPILOT</h1>
+                <p>Intelligent Health, Safety & Environmental Support</p>
+            </div>
+        </div>
 
-      <span class="tag">HSE AI ASSISTANT</span>
+        <div class="company-badge">
+            <span>ACTIVE WORKSPACE</span>
+            <strong>Company Account</strong>
+        </div>
 
-      <h2>What work are you planning to do?</h2>
+    </div>
+</header>
 
-      <p>
-        Describe the task and SKYE will help identify the key HSE considerations.
-      </p>
 
-      <textarea
-        id="task"
-        placeholder="Example: Carry out grinding and welding repairs on the gangway..."
-      ></textarea>
+<main class="container">
 
-      <button onclick="
+    <section class="welcome">
+
+        <h2>Good day 👋</h2>
+
+        <p>
+            Your HSE workspace for risk assessment, safety management,
+            operational guidance and controlled company knowledge.
+        </p>
+
+        <div class="status">
+            <span class="status-dot"></span>
+            HSE Copilot Online
+        </div>
+
+    </section>
+
+
+    <section class="grid">
+
+        <div class="card">
+
+            <div class="card-icon">🤖</div>
+
+            <h3>HSE Copilot</h3>
+
+            <p>
+                Ask HSE questions and receive practical guidance based on
+                your authorised company knowledge.
+            </p>
+
+            <button onclick="comingSoon('HSE Copilot')">
+                Open Copilot
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">📚</div>
+
+            <h3>Knowledge Base</h3>
+
+            <p>
+                Access your company's controlled manuals, procedures,
+                standards, risk matrices and HSE documentation.
+            </p>
+
+            <button onclick="comingSoon('Knowledge Base')">
+                Open Knowledge Base
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">📋</div>
+
+            <h3>Risk Assessment / TRA</h3>
+
+            <p>
+                Build, review and improve task risk assessments using
+                your company's approved methodology.
+            </p>
+
+            <button onclick="comingSoon('TRA / Risk Assessment')">
+                Start TRA
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">⚠️</div>
+
+            <h3>Safety Observations</h3>
+
+            <p>
+                Record observations, identify hazards, assess consequences
+                and recommend corrective actions.
+            </p>
+
+            <button onclick="comingSoon('Safety Observations')">
+                New Observation
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">📊</div>
+
+            <h3>HSE Dashboard</h3>
+
+            <p>
+                View safety performance, observations, actions,
+                risk trends and key HSE information.
+            </p>
+
+            <button onclick="comingSoon('HSE Dashboard')">
+                Open Dashboard
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">⚙️</div>
+
+            <h3>Company Administration</h3>
+
+            <p>
+                Manage company settings, users, permissions and
+                controlled HSE knowledge.
+            </p>
+
+            <button onclick="comingSoon('Company Administration')">
+                Admin Area
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <h2 class="section-title">Company Knowledge Base</h2>
+
+
+    <section class="knowledge">
+
+        <div class="knowledge-top">
+
+            <div>
+
+                <h3>🔐 Private Company Knowledge</h3>
+
+                <p>
+                    Each SKYE customer will have its own isolated knowledge
+                    environment. Company documents are used only for that
+                    company's authorised users.
+                </p>
+
+            </div>
+
+            <button
+                onclick="comingSoon('Secure Document Upload')"
+                style="
+                border:none;
+                background:#0b3d91;
+                color:white;
+                padding:12px 17px;
+                border-radius:9px;
+                font-weight:600;
+                cursor:pointer;
+                ">
+                + Upload Documents
+            </button>
+
+        </div>
+
+
+        <div class="secure">
+
+            <div class="secure-item">
+                <strong>📘 HSE Manuals</strong>
+                Controlled company manuals and standards
+            </div>
+
+            <div class="secure-item">
+                <strong>📊 Risk Matrices</strong>
+                Company-specific risk assessment methodology
+            </div>
+
+            <div class="secure-item">
+                <strong>📋 TRA / PTW</strong>
+                Approved templates and work control procedures
+            </div>
+
+            <div class="secure-item">
+                <strong>🔒 LOTO / Isolation</strong>
+                Company isolation and energy-control procedures
+            </div>
+
+            <div class="secure-item">
+                <strong>🏗️ Lifting / WAH</strong>
+                Lifting and working-at-height requirements
+            </div>
+
+            <div class="secure-item">
+                <strong>🚨 Emergency Procedures</strong>
+                Emergency response and recovery requirements
+            </div>
+
+        </div>
+
+
+        <div class="notice">
+            <strong>Security architecture:</strong>
+            Company documents will be stored in a secure backend and
+            isolated by company account. The public GitHub prototype
+            does not contain confidential customer HSE documents.
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+    SKYE HSE COPILOT • HSE Intelligence Platform
+</footer>
+
+
+<script>
+
+function comingSoon(feature) {
+
+    alert(
+        feature +
+        " is part of the SKYE platform build.\n\n" +
+        "This interface is currently the front-end prototype. " +
+        "Secure company data storage and authentication will be connected next."
+    );
+
+}
+
+</script>
+
+</body>
+</html>
