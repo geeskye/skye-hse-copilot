@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SKYE HSE Copilot</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #172033;
+    }
+
+    header {
+      background: #0b1f3a;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      color: #b9c7da;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #667085;
+      margin-bottom: 25px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 160px;
+      padding: 15px;
+      border: 1px solid #ccd3df;
+      border-radius: 10px;
+      font-size: 16px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 15px;
+      background: #1463ff;
+      color: white;
+      border: none;
+      padding: 14px 22px;
+      border-radius: 9px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0d4ed1;
+    }
+
+    #response {
+      margin-top: 25px;
+      padding: 20px;
+      background: #eef4ff;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #dbe7ff;
+      color: #1746a2;
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>SKYE</h1>
+    <p>HSE Copilot</p>
+  </header>
+
+  <div class="container">
+
+    <div class="card">
+
+      <span class="tag">HSE AI ASSISTANT</span>
+
+      <h2>What work are you planning to do?</h2>
+
+      <p>
+        Describe the task and SKYE will help identify the key HSE considerations.
+      </p>
+
+      <textarea
+        id="task"
+        placeholder="Example: Carry out grinding and welding repairs on the gangway..."
+      ></textarea>
+
+      <button onclick="
