@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SKYE HSE Copilot — Workspace</title>
+<style>
+:root{--blue:#123f8f;--blue2:#0b2f6f;--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#667085;--line:#e4e7ec;--green:#067647;--greenbg:#ecfdf3;--amber:#b54708;--amberbg:#fffaeb;--danger:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}header{background:linear-gradient(135deg,var(--blue2),var(--blue));color:#fff;padding:22px 18px}header .top{max-width:1050px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:16px}header h1{margin:0;font-size:25px}header p{margin:5px 0 0;opacity:.85;font-size:14px}.workspace{font-weight:700}button{border:1px solid var(--line);border-radius:10px;padding:11px 15px;font-weight:600;font-size:14px;background:#fff;color:var(--text);cursor:pointer}button.primary{background:var(--blue);border-color:var(--blue);color:#fff}button.danger{color:var(--danger)}button:disabled{opacity:.55;cursor:not-allowed}.logout{background:transparent;color:#fff;border-color:rgba(255,255,255,.5)}main{max-width:1050px;margin:22px auto;padding:0 16px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 2px 8px rgba(16,24,40,.04)}.card h2{font-size:17px;margin:0 0 7px}.card p{color:var(--muted);font-size:14px;line-height:1.5;margin:0}.metric{font-size:28px;font-weight:800;margin:5px 0}.section{margin-top:18px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.section-head h2{margin:0;font-size:20px}.actions{display:flex;gap:8px;flex-wrap:wrap}.upload{display:grid;grid-template-columns:1.3fr 1fr .55fr auto;gap:10px;align-items:end}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:6px}.field input,.field select{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:#fff;font:inherit}.hint{font-size:12px;color:var(--muted);margin-top:8px}.status{margin-top:10px;padding:10px 12px;border-radius:9px;font-size:13px;display:none}.status.ok{display:block;background:var(--greenbg);color:var(--green)}.status.err{display:block;background:#fef3f2;color:var(--danger)}.status.warn{display:block;background:var(--amberbg);color:var(--amber)}.toolbar{display:flex;gap:10px;align-items:center;margin-bottom:10px}.toolbar input{flex:1;padding:11px;border:1px solid var(--line);border-radius:9px;font:inherit}.docs{display:grid;gap:9px}.doc{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}.doc-name{font-weight:700}.meta{color:var(--muted);font-size:12px;margin-top:4px}.badge{display:inline-block;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:700;margin-right:5px;background:#eef2ff;color:#3730a3}.empty{padding:30px;text-align:center;color:var(--muted);border:1px dashed #cfd4dc;border-radius:12px;background:#fff}.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.tool{padding:16px;border:1px solid var(--line);border-radius:13px;background:#fff}.tool h3{margin:0 0 6px;font-size:15px}.tool p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}.tool .tag{margin-top:10px;font-size:11px;font-weight:700;color:var(--blue)}footer{max-width:1050px;margin:25px auto;padding:0 16px 35px;color:var(--muted);font-size:12px}@media(max-width:800px){.grid,.tools{grid-template-columns:1fr}.upload{grid-template-columns:1fr}.section-head{align-items:flex-start;flex-direction:column}.doc{grid-template-columns:1fr}.top{align-items:flex-start!important}.logout{padding:9px}}
+</style>
+</head>
+<body>
+<header><div class="top"><div><h1>SKYE HSE COPILOT</h1><p>Controlled HSE workspace · <span class="workspace" id="workspaceName">Loading…</span></p></div><button class="logout" onclick="logout()">Sign out</button></div></header>
+<main>
+<div class="grid">
+  <div class="card"><h2>Company workspace</h2><div class="metric" id="workspaceMetric">—</div><p>Your isolated company environment. Company knowledge is only available to authenticated members of this workspace.</p></div>
+  <div class="card"><h2>Controlled documents</h2><div class="metric" id="docCount">0</div><p>Procedures, manuals, risk matrices, TRA templates and other controlled HSE information.</p></div>
+  <div class="card"><h2>Your role</h2><div class="metric" id="roleMetric">—</div><p>Workspace permissions are tied to your company membership.</p></div>
+</div>
+
+<section class="section card">
+  <div class="section-head"><div><h2>📚 Controlled HSE Knowledge Base</h2><p>Upload company-controlled documents into this private workspace.</p></div></div>
+  <div class="upload">
+    <div class="field"><label>Document</label><input id="file" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.jpg,.jpeg,.png"></div>
+    <div class="field"><label>Document type</label><select id="docType"><option>HSE Manual</option><option>Risk Matrix</option><option>TRA / Risk Assessment</option><option>PTW Procedure</option><option>Pre-Job Safety Check</option><option>Procedure</option><option>Form / Template</option><option>Client Requirement</option><option>Other</option></select></div>
+    <div class="field"><label>Revision / version</label><input id="version" placeholder="e.g. Rev 9"></div>
+    <button class="primary" id="uploadBtn" onclick="uploadDocument()">Upload</button>
+  </div>
+  <div class="hint">Files are stored in the private company-documents bucket. This prototype uses the active company's membership to enforce access.</div>
+  <div id="uploadStatus" class="status"></div>
+</section>
+
+<section class="section">
+  <div class="section-head"><h2>Company document library</h2><div class="actions"><button onclick="loadDocuments()">Refresh</button></div></div>
+  <div class="toolbar"><input id="search" placeholder="Search documents…" oninput="renderDocuments()"><select id="filter" onchange="renderDocuments()"><option value="">All types</option><option>HSE Manual</option><option>Risk Matrix</option><option>TRA / Risk Assessment</option><option>PTW Procedure</option><option>Pre-Job Safety Check</option><option>Procedure</option><option>Form / Template</option><option>Client Requirement</option><option>Other</option></select></div>
+  <div id="documents" class="docs"><div class="empty">Loading company documents…</div></div>
+</section>
+
+<section class="section">
+  <div class="section-head"><h2>HSE tools</h2></div>
+  <div class="tools">
+    <div class="tool"><h3>⚠️ Risk Assessment / TRA</h3><p>Next build: guide the user through job steps, hazards, initial risk, ALARP controls, responsibility and revised risk.</p><div class="tag">Uses company risk matrix</div></div>
+    <div class="tool"><h3>🦺 Pre-Job Safety Check</h3><p>Next build: field-ready readiness check covering TRA/PTW, SIMOPS, isolation, competence, equipment, environment and emergency arrangements.</p><div class="tag">Based on controlled checklist</div></div>
+    <div class="tool"><h3>🤖 HSE Copilot</h3><p>Next build: answer HSE questions using the active company's controlled knowledge base and clearly distinguish company requirements from general guidance.</p><div class="tag">Company-aware AI</div></div>
+  </div>
+</section>
+</main>
+<footer>SKYE prototype · Company data is intended to remain isolated by workspace. Always verify operational HSE decisions against the applicable controlled documents and competent-person approval.</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://lwobrgsquuerhwmplaze.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_4iLGQP-3yZ-vw4Y3hpR7JA_OOc6LIoy';
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+let workspace=null;
+let documents=[];
+function status(message,type){const el=document.getElementById('uploadStatus');el.textContent=message;el.className='status '+type;}
+async function init(){
+  const {data,error}=await db.auth.getSession();
+  if(error||!data.session){window.location.href='index.html';return;}
+  const {data:rows,error:rpcError}=await db.rpc('get_my_company_workspace');
+  if(rpcError||!rows||!rows.length){alert('Your account is not linked to a company workspace.');await db.auth.signOut();window.location.href='index.html';return;}
+  workspace=rows[0];
+  document.getElementById('workspaceName').textContent=workspace.company_name;
+  document.getElementById('workspaceMetric').textContent=workspace.company_name;
+  document.getElementById('roleMetric').textContent=workspace.role;
+  await loadDocuments();
+}
+async function loadDocuments(){
+  if(!workspace)return;
+  const {data,error}=await db.from('company_documents').select('id,document_name,document_type,version,status,storage_path,created_at,updated_at').eq('company_id',workspace.company_id).order('created_at',{ascending:false});
+  if(error){document.getElementById('documents').innerHTML='<div class="empty">Unable to load the company document library.</div>';console.error(error);return;}
+  documents=data||[];document.getElementById('docCount').textContent=documents.length;renderDocuments();
+}
+function renderDocuments(){
+  const q=(document.getElementById('search').value||'').toLowerCase();const filter=document.getElementById('filter').value;
+  const list=documents.filter(d=>(!filter||d.document_type===filter)&&(!q||(d.document_name||'').toLowerCase().includes(q)||(d.document_type||'').toLowerCase().includes(q)));
+  const el=document.getElementById('documents');
+  if(!list.length){el.innerHTML='<div class="empty">No documents found in this company workspace.</div>';return;}
+  el.innerHTML=list.map(d=>`<div class="doc"><div><div class="doc-name">${escapeHtml(d.document_name)}</div><div class="meta"><span class="badge">${escapeHtml(d.document_type||'Other')}</span>${escapeHtml(d.version||'No revision')} · ${escapeHtml(d.status||'Controlled')} · ${new Date(d.created_at).toLocaleDateString()}</div></div><button onclick="openDocument('${d.id}')">Open</button></div>`).join('');
+}
+async function openDocument(id){
+  const d=documents.find(x=>x.id===id);if(!d||!d.storage_path)return;
+  const {data,error}=await db.storage.from('company-documents').createSignedUrl(d.storage_path,600);
+  if(error){alert('Unable to open this document.');console.error(error);return;}
+  window.open(data.signedUrl,'_blank');
+}
+async function uploadDocument(){
+  const file=document.getElementById('file').files[0];const type=document.getElementById('docType').value;const version=document.getElementById('version').value.trim()||'Unspecified';const btn=document.getElementById('uploadBtn');
+  if(!file){status('Choose a document first.','warn');return;} if(!workspace){status('Workspace not loaded.','err');return;}
+  btn.disabled=true;status('Uploading document…','warn');
+  try{
+    const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');const path=workspace.company_id+'/'+Date.now()+'_'+safe;
+    const {error:upError}=await db.storage.from('company-documents').upload(path,file,{upsert:false,contentType:file.type||'application/octet-stream'});
+    if(upError)throw upError;
+    const {data:auth}=await db.auth.getUser();
+    const {error:metaError}=await db.from('company_documents').insert({company_id:workspace.company_id,uploaded_by:auth.user.id,document_name:file.name,document_type:type,storage_path:path,version,status:'Controlled'});
+    if(metaError){await db.storage.from('company-documents').remove([path]);throw metaError;}
+    document.getElementById('file').value='';document.getElementById('version').value='';status('Document uploaded successfully.','ok');await loadDocuments();
+  }catch(e){console.error(e);status(e.message||'Upload failed.','err');}finally{btn.disabled=false;}
+}
+async function logout(){await db.auth.signOut();window.location.href='index.html';}
+function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+init();
+</script>
+</body>
+</html>
