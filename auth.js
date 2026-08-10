@@ -25,19 +25,20 @@
     if (login) login.classList.remove('hidden');
   }
 
-  async function getMembership(userId){
-    const { data, error } = await db
-      .from('company_members')
-      .select('company_id, role, companies(name)')
-      .eq('user_id', userId)
-      .limit(1)
-      .maybeSingle();
+  async function getMembership(){
+    const { data, error } = await db.rpc('get_my_company_workspace');
     if (error) throw error;
-    return data;
+    if (!data || !data.length) return null;
+    const row = data[0];
+    return {
+      company_id: row.company_id,
+      role: row.role,
+      companies: { name: row.company_name }
+    };
   }
 
   async function ensureWorkspace(user){
-    let membership = await getMembership(user.id);
+    let membership = await getMembership();
     if (membership) return membership;
 
     const pending = localStorage.getItem(PENDING_KEY);
@@ -54,10 +55,10 @@
     if (createError) throw createError;
 
     localStorage.removeItem(PENDING_KEY);
-    membership = await getMembership(user.id);
+    membership = await getMembership();
 
     if (!membership && companyId) {
-      return { company_id: companyId, role: 'admin', companies: { name: companyName } };
+      return { company_id: companyId, role: 'owner', companies: { name: companyName } };
     }
     return membership;
   }
