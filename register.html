@@ -66,40 +66,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;ba
 <section id="successView" class="success">
   <div class="success-icon">✓</div>
   <h2>Workspace created</h2>
-  <p>Your SKYE company workspace has been created in this prototype. Secure authentication and backend tenant storage will be connected in the next stage.</p>
+  <p>Your SKYE company workspace has been created. Secure authentication and tenant storage are now connected to the backend.</p>
   <div class="workspace-card"><strong>COMPANY WORKSPACE</strong><span id="createdCompany"></span></div>
   <a class="go" href="index.html">Continue to SKYE</a>
 </section>
 </main></div>
 
+<!-- Supabase client must load before auth.js -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-function val(id){return document.getElementById(id).value.trim()}
-function createAccount(){
-  const company=val('company'),admin=val('admin'),email=val('email');
-  const password=document.getElementById('password').value;
-  const confirm=document.getElementById('confirm').value;
-
-  if(!company||!admin||!email||!password||!confirm){
-    alert('Please complete all fields.'); return;
-  }
-  if(!email.includes('@')||!email.includes('.')){
-    alert('Please enter a valid work email address.'); return;
-  }
-  if(password.length<8||!/[0-9]/.test(password)){
-    alert('Password must be at least 8 characters and contain a number.'); return;
-  }
-  if(password!==confirm){
-    alert('Passwords do not match.'); return;
-  }
-
-  const slug=company.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  const workspace={company,admin,email,slug,createdAt:new Date().toISOString()};
-  localStorage.setItem('skye_demo_workspace',JSON.stringify(workspace));
-
-  document.getElementById('createdCompany').textContent=company;
-  document.getElementById('formView').style.display='none';
-  document.getElementById('successView').style.display='block';
-}
+const SUPABASE_URL = "https://lwobrgsquuerhwmplaze.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_4iLGQP-3yZ-vw4Y3hpR7JA_OOc6LIoy";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 </script>
 <script src="auth.js"></script>
 </body>
