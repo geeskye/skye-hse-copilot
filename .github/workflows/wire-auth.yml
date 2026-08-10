@@ -1,0 +1,33 @@
+name: Wire SKYE Auth
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  wire-auth:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add auth runtime to pages
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for name in ['index.html', 'register.html']:
+              p = Path(name)
+              text = p.read_text()
+              tag = '<script src="auth.js"></script>'
+              if tag not in text:
+                  text = text.replace('</body>', f'{tag}\n</body>')
+                  p.write_text(text)
+          PY
+      - name: Commit auth wiring
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html register.html
+          git diff --cached --quiet || git commit -m 'Wire SKYE pages to Supabase auth runtime'
+          git push
