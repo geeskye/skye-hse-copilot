@@ -7,6 +7,7 @@
   }
 
   const PENDING_KEY = 'skye_pending_company';
+  const APP_URL = 'https://geeskye.github.io/skye-hse-copilot/index.html';
 
   function showApp(companyName){
     const login = document.getElementById('login');
@@ -131,7 +132,10 @@
       const { data, error } = await db.auth.signUp({
         email,
         password,
-        options: { data: { full_name: admin } }
+        options: {
+          data: { full_name: admin },
+          emailRedirectTo: APP_URL
+        }
       });
       if (error) throw error;
 
