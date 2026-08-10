@@ -1,25 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>SKYE HSE Copilot</title></head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>SKYE HSE Copilot</title><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;padding:30px;background:#f5f7fb;color:#172033}section{max-width:600px;margin:70px auto;background:#fff;padding:28px;border-radius:18px;border:1px solid #e4e7ec;box-shadow:0 3px 14px rgba(16,24,40,.06)}h1{font-size:30px}label{display:block;font-weight:700;font-size:14px;margin-top:16px}input{display:block;width:100%;padding:13px;margin-top:7px;border:1px solid #cfd4dc;border-radius:9px;box-sizing:border-box;font:inherit}button{padding:12px 18px;margin:16px 6px 0 0;border-radius:9px;border:1px solid #0b3d91;background:#fff;color:#0b3d91;font-weight:700;cursor:pointer}.primary{background:#0b3d91;color:#fff}.help{font-size:12px;color:#667085}</style></head>
 <body>
-<section id="login"><h1>SKYE HSE COPILOT</h1><label>Company / Organisation</label><input id="company"><label>Email address</label><input id="email" type="email"><label>Password</label><input id="password" type="password"><button class="primary" onclick="signIn()">Sign in to SKYE</button><button onclick="createCompany()">Create company account</button><button onclick="resendConfirmation()">Resend confirmation email</button><p id="confirmationHelp">Use this if your confirmation email has expired or was sent to the wrong address.</p></section>
-<section id="app" class="hidden"><h1>SKYE HSE COPILOT</h1><div>ACTIVE WORKSPACE: <strong id="workspaceName">Company</strong></div><button onclick="logout()">Sign out</button><h2>Good day 👋</h2><p>Your HSE workspace for risk assessment, safety management, operational guidance and controlled company knowledge.</p></section>
-<style>.hidden{display:none!important}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;padding:30px}section{max-width:600px;margin:auto}input{display:block;width:100%;padding:12px;margin:8px 0 16px;box-sizing:border-box}button{padding:12px 18px;margin:5px;border-radius:8px;border:1px solid #0b3d91}.primary{background:#0b3d91;color:white}#confirmationHelp{font-size:12px;color:#667085}</style>
+<section id="login"><h1>SKYE HSE COPILOT</h1><p>Secure company HSE workspace</p><label>Company / Organisation</label><input id="company" autocomplete="organization"><label>Email address</label><input id="email" type="email" autocomplete="email"><label>Password</label><input id="password" type="password" autocomplete="current-password"><button class="primary" onclick="signIn()">Sign in to SKYE</button><button onclick="createCompany()">Create company account</button><button onclick="resendConfirmation()">Resend confirmation email</button><p class="help">For prototype testing, email confirmation can be bypassed for authorised test accounts. Production email will be configured later.</p></section>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL="https://lwobrgsquuerhwmplaze.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_4iLGQP-3yZ-vw4Y3hpR7JA_OOc6LIoy";
 window.skyeSupabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 function createCompany(){window.location.href='register.html';}
-async function resendConfirmation(){
-  const email=document.getElementById('email').value.trim();
-  if(!email){alert('Enter your email address first.');return;}
-  const {error}=await window.skyeSupabase.auth.resend({type:'signup',email,options:{emailRedirectTo:'https://geeskye.github.io/skye-hse-copilot/index.html'}});
-  if(error){console.error(error);alert(error.message||'Unable to resend confirmation email.');return;}
-  alert('A fresh confirmation email has been sent. Check your inbox.');
-}
+async function resendConfirmation(){const email=document.getElementById('email').value.trim();if(!email){alert('Enter your email address first.');return;}const {error}=await window.skyeSupabase.auth.resend({type:'signup',email,options:{emailRedirectTo:'https://geeskye.github.io/skye-hse-copilot/index.html'}});if(error){console.error(error);alert(error.message||'Unable to resend confirmation email.');return;}alert('A fresh confirmation email has been sent. Check your inbox.');}
 </script>
-<script src="auth.js?v=20260810-8"></script>
-<script src="auth.js"></script>
+<script src="auth.js?v=20260810-9"></script>
 </body>
 </html>
