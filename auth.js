@@ -1,4 +1,11 @@
 (function(){
+  const db = window.skyeSupabase;
+  if (!db) {
+    alert('SKYE could not initialise its secure connection. Please refresh the page and try again.');
+    console.error('SKYE Supabase client missing');
+    return;
+  }
+
   const PENDING_KEY = 'skye_pending_company';
 
   function showApp(companyName){
@@ -18,7 +25,7 @@
   }
 
   async function getMembership(userId){
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('company_members')
       .select('company_id, role, companies(name)')
       .eq('user_id', userId)
@@ -40,7 +47,7 @@
     const companyName = pendingData && pendingData.company ? pendingData.company.trim() : '';
     if (!companyName) return null;
 
-    const { data: companyId, error: createError } = await supabase
+    const { data: companyId, error: createError } = await db
       .rpc('create_company_workspace', { p_company_name: companyName });
 
     if (createError) throw createError;
@@ -68,12 +75,12 @@
     if (button) { button.disabled = true; button.textContent = 'Signing in…'; }
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await db.auth.signInWithPassword({ email, password });
       if (error) throw error;
 
       const membership = await ensureWorkspace(data.user);
       if (!membership) {
-        await supabase.auth.signOut();
+        await db.auth.signOut();
         throw new Error('Your account is authenticated, but it is not linked to a SKYE company workspace yet.');
       }
 
@@ -82,7 +89,7 @@
         : 'Company';
 
       if (companyInput && companyInput.toLowerCase() !== companyName.toLowerCase()) {
-        await supabase.auth.signOut();
+        await db.auth.signOut();
         throw new Error('The company entered does not match the workspace linked to this account.');
       }
 
@@ -121,12 +128,10 @@
     try {
       localStorage.setItem(PENDING_KEY, JSON.stringify({ company, admin, email }));
 
-      const { data, error } = await supabase.auth.signUp({
+      const { data, error } = await db.auth.signUp({
         email,
         password,
-        options: {
-          data: { full_name: admin }
-        }
+        options: { data: { full_name: admin } }
       });
       if (error) throw error;
 
@@ -155,12 +160,12 @@
   };
 
   window.logout = async function(){
-    await supabase.auth.signOut();
+    await db.auth.signOut();
     showLogin();
   };
 
   document.addEventListener('DOMContentLoaded', async function(){
-    const { data } = await supabase.auth.getSession();
+    const { data } = await db.auth.getSession();
     if (!data.session) return;
 
     try {
@@ -173,7 +178,7 @@
       }
     } catch (err) {
       console.error('Session restore failed:', err);
-      await supabase.auth.signOut();
+      await db.auth.signOut();
       showLogin();
     }
   });
