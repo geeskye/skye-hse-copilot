@@ -54,12 +54,25 @@ jobs:
           p.write_text(text)
           PY
 
+      - name: Wire TRA builder button
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('dashboard.html')
+          text = p.read_text()
+          old = '<div class="tag">Next: interactive TRA builder</div>'
+          new = '<div class="tag"><a href="tra.html" style="color:inherit;text-decoration:none;font-weight:800">Open interactive TRA builder →</a></div>'
+          if old in text:
+              text = text.replace(old, new, 1)
+          p.write_text(text)
+          PY
+
       - name: Commit generated wiring
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html register.html dashboard.html
-          git diff --cached --quiet || git commit -m 'Polish Ask SKYE answers and sources'
+          git diff --cached --quiet || git commit -m 'Wire TRA builder into workspace'
 
       - name: Push with rebase retry
         run: |
