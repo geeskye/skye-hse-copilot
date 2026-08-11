@@ -12,4 +12,19 @@ input,select,textarea{border:1px solid #d8d8d8!important;border-radius:2px!impor
 footer{max-width:1180px!important;margin:0 auto!important;padding:24px!important;border-top:1px solid #111!important;color:#777!important;background:#fff!important}
 #login{max-width:720px!important;margin:12vh auto!important;background:#fff!important;border:0!important;border-top:1px solid #111!important;border-radius:0!important;box-shadow:none!important;padding:50px 20px!important}#login h1{font-size:48px!important;letter-spacing:-.06em!important;color:#111!important}#login p{color:#666!important}#login button{border-radius:2px!important}#login .primary{background:#111!important}
 a{color:#111!important;text-decoration-thickness:1px!important;text-underline-offset:3px}
+/* Dashboard section order: Ask SKYE first, HSE tools second, company knowledge third. */
+body:has(#knowledge) main{display:flex!important;flex-direction:column!important}
+body:has(#knowledge) main>.hero{order:0}
+body:has(#knowledge) main>.stats{order:1}
+body:has(#knowledge) main>#ask{order:2}
+body:has(#knowledge) main>#tools{order:3}
+body:has(#knowledge) main>#knowledge{order:4}
+body:has(#knowledge) main>.section:not(#ask):not(#knowledge):not(#tools){order:5}
+body:has(#knowledge) #tools .eyebrow{font-size:0!important}
+body:has(#knowledge) #tools .eyebrow:after{content:"02 · Operational tools";font-size:12px!important}
+body:has(#knowledge) #knowledge .eyebrow{font-size:0!important}
+body:has(#knowledge) #knowledge .eyebrow:after{content:"03 · Controlled knowledge";font-size:12px!important}
+body:has(#knowledge) .hero .nav{display:flex!important}
+body:has(#knowledge) .hero .nav a:nth-child(2){order:3}
+body:has(#knowledge) .hero .nav a:nth-child(3){order:2}
 @media(max-width:800px){main{padding:34px 18px 70px!important}.grid,.tools{grid-template-columns:1fr!important}.grid .card{border-right:0!important;border-bottom:1px solid #e8e8e8!important}.tool{border-right:0!important}.section.card{padding:34px 0!important}.section-head h2{font-size:26px!important}#login{margin:8vh auto!important;padding:36px 20px!important}#login h1{font-size:38px!important}}
