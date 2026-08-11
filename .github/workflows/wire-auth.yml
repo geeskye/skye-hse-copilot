@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Add auth runtime to pages
         run: |
           python - <<'PY'
@@ -24,6 +27,23 @@ jobs:
                   text = text.replace('</body>', f'{tag}\n</body>')
                   p.write_text(text)
           PY
+
+      - name: Keep Ask SKYE concise and source-aware
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('dashboard.html')
+          text = p.read_text()
+          text = text.replace('Short answer first. Source and revision are shown underneath so the user can verify the controlled document.', 'Direct answer first. The controlled source is shown underneath so the user can verify it in one tap.')
+          old = "const sourceIndex=Math.max(0,Math.min(data.length-1,Number.isInteger(a.source_index)?a.source_index:0));const source=data[sourceIndex]||data[0];"
+          new = "const sourceIndices=Array.isArray(a.source_indices)?a.source_indices.map(Number).filter(n=>Number.isInteger(n)&&n>=1&&n<=data.length):[];const sourceIndex=sourceIndices.length?sourceIndices[0]-1:Math.max(0,Math.min(data.length-1,Number.isInteger(a.source_index)?a.source_index:0));const source=data[sourceIndex]||data[0];"
+          text = text.replace(old, new)
+          old2 = "html+=`<div class=\"source\"><div class=\"source-head\"><div><strong>${esc(source.document_name)}</strong><small>${esc(source.document_type||'Controlled document')} · ${esc(source.version||'No revision')}</small></div><button onclick=\"openSearchSource('${esc(source.company_document_id||'')}')\">📄 View source</button></div><p>${esc(cleanText(source.excerpt))}</p></div>`;el.innerHTML=html}"
+          new2 = "const sourceList=sourceIndices.length?sourceIndices.map(n=>data[n-1]).filter(Boolean):[source];html+=sourceList.map(src=>`<div class=\"source\"><div class=\"source-head\"><div><strong>${esc(src.document_name)}</strong><small>${esc(src.document_type||'Controlled document')} · ${esc(src.version||'No revision')}</small></div><button onclick=\"openSearchSource('${esc(src.company_document_id||'')}')\">📄 View source</button></div><p>${esc(cleanText(src.excerpt))}</p></div>`).join('');el.innerHTML=html}"
+          text = text.replace(old2, new2)
+          p.write_text(text)
+          PY
+
       - name: Fix knowledge search relevance display
         run: |
           python - <<'PY'
@@ -33,15 +53,20 @@ jobs:
           text = text.replace('Number(x.rank||0).toFixed(2)', 'Number(x.relevance||0).toFixed(2)')
           p.write_text(text)
           PY
-      - name: Commit auth and dashboard wiring
+
+      - name: Commit generated wiring
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html register.html dashboard.html
-          git diff --cached --quiet || git commit -m 'Fix knowledge search relevance display'
+          git diff --cached --quiet || git commit -m 'Polish Ask SKYE answers and sources'
+
+      - name: Push with rebase retry
+        run: |
           for attempt in 1 2 3; do
-            git pull --rebase origin main && git push && exit 0
-            sleep 2
+            git fetch origin main
+            git rebase origin/main && git push origin HEAD:main && exit 0
+            git rebase --abort || true
+            sleep $((attempt * 2))
           done
-          echo 'Unable to push after 3 attempts.'
           exit 1
