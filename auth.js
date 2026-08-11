@@ -3,7 +3,7 @@
   if (!db) { alert('SKYE could not initialise its secure connection. Please refresh the page and try again.'); return; }
   const PENDING_KEY='skye_pending_company';
   const APP_URL='https://geeskye.github.io/skye-hse-copilot/index.html';
-  const DASHBOARD_URL='https://geeskye.github.io/skye-hse-copilot/dashboard.html';
+  const DASHBOARD_URL='https://geeskye.github.io/skye-hse-copilot/workspace.html';
   async function getMembership(){const {data,error}=await db.rpc('get_my_company_workspace');if(error)throw error;if(!data||!data.length)return null;const row=data[0];return {company_id:row.company_id,role:row.role,companies:{name:row.company_name}};}
   async function ensureWorkspace(){let membership=await getMembership();if(membership)return membership;const pending=localStorage.getItem(PENDING_KEY);if(!pending)return null;let pendingData;try{pendingData=JSON.parse(pending)}catch(_){pendingData=null}const companyName=pendingData&&pendingData.company?pendingData.company.trim():'';if(!companyName)return null;const {data:companyId,error:createError}=await db.rpc('create_company_workspace',{p_company_name:companyName});if(createError)throw createError;localStorage.removeItem(PENDING_KEY);membership=await getMembership();return membership||({company_id:companyId,role:'owner',companies:{name:companyName}});}
   function goDashboard(){window.location.href=DASHBOARD_URL;}
