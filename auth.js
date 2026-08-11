@@ -12,3 +12,24 @@
   window.logout=async function(){await db.auth.signOut();window.location.href=APP_URL;};
   document.addEventListener('DOMContentLoaded',async function(){const {data}=await db.auth.getSession();if(!data.session)return;try{const membership=await ensureWorkspace();if(membership&&document.getElementById('login'))goDashboard();}catch(err){console.error('Session restore failed:',err);await db.auth.signOut();}});
 })();
+
+/* Landing page visual system — green offshore SKYE theme. */
+(function(){
+  if(location.pathname.endsWith('/index.html') || location.pathname.endsWith('/')){
+    if(document.getElementById('skye-green-theme')) return;
+    const s=document.createElement('style');s.id='skye-green-theme';
+    s.textContent=`
+:root{--skye-green:#176b4d;--skye-dark:#0b2b21;--skye-deep:#061d16;--skye-pale:#e8f2ec;--skye-paper:#f5f8f6;--skye-line:#d4e1da;--skye-muted:#60736b}
+body{background:var(--skye-paper)!important;color:#123126!important}
+.nav{background:rgba(245,248,246,.95)!important;border-bottom:1px solid var(--skye-line)!important}.brand{color:#123126!important}.brand span{color:var(--skye-green)!important}.navlinks a{color:#123126!important}.navcta{background:var(--skye-dark)!important;color:#fff!important;border-radius:999px!important}
+.hero{background:linear-gradient(90deg,rgba(4,29,21,.98) 0%,rgba(7,39,28,.93) 42%,rgba(8,45,32,.68) 72%,rgba(8,45,32,.55) 100%),url('assets/offshore-bg.jpg') center/cover no-repeat!important;min-height:760px!important}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(23,107,77,.22),transparent 48%,rgba(3,24,17,.22));pointer-events:none}.hero-copy{z-index:2}.hero .eyebrow{color:#9bc7b2!important}.hero h1{color:#f8fbf9!important}.hero h1 em{color:#a9d4bd!important}.hero-sub{color:#d4e2db!important}.btn{border-color:#a9cbbb!important}.btn.dark{background:#f4f8f6!important;color:#0b2b21!important;border-color:#f4f8f6!important}.btn.light{background:rgba(8,43,31,.28)!important;color:#fff!important}.hero-visual{border-top-color:rgba(171,211,192,.38)!important}.hero-grid{background:linear-gradient(90deg,transparent 24.8%,rgba(171,211,192,.2) 25%,transparent 25.2%,transparent 49.8%,rgba(171,211,192,.2) 50%,transparent 50.2%,transparent 74.8%,rgba(171,211,192,.2) 75%,transparent 75.2%),linear-gradient(0deg,transparent 49.5%,rgba(171,211,192,.2) 50%,transparent 50.5%)!important}.hero-block{background:#dfeee6!important}.hero-block:after{color:#123126!important}.hero-tag{color:#a9cbbb!important}
+.section.white{background:#fff!important}.section.gray{background:#e7f0eb!important}.eyebrow{color:#39745c!important}.section h2{color:#123126!important}.section h2 em{color:#2f8061!important}.lead{color:#52685f!important}.features{border-top-color:#176b4d!important}.feature{border-color:#d4e1da!important}.feature .num,.tool .num{color:#39745c!important}.feature h3,.tool h3{color:#123126!important}.feature p,.tool p{color:#60736b!important}.feature a{color:#176b4d!important;border-bottom-color:#176b4d!important}
+.blackband{background:linear-gradient(135deg,#0b2b21,#123f30)!important}.blackband .eyebrow{color:#83b39b!important}.blackband h2{color:#f5faf7!important}.blackband h2 em{color:#a9d4bd!important}.blackband p,.step span{color:#c6d9d0!important}.steps{border-top-color:#4d7865!important}.step{border-bottom-color:#315b4a!important}.step b{color:#82ae98!important}.step strong{color:#fff!important}
+.demo-card{border-color:#176b4d!important;box-shadow:18px 18px 0 #0b2b21!important}.demo-card .mini-label{color:#39745c!important}.demo-card h3{color:#123126!important}.demo-card p{color:#60736b!important}.question{border-color:#c6d9d0!important;background:#f0f6f2!important}.demo-card button{background:#176b4d!important}
+.tools{border-top-color:#176b4d!important}.tool{border-color:#d4e1da!important}.login-box{border-color:#176b4d!important;box-shadow:14px 14px 0 #0b2b21!important}.login-box h3{color:#123126!important}.login-box input{border-color:#c1d4ca!important;background:#f8fbf9!important}.login-box button{border-color:#176b4d!important;color:#123126!important}.login-box .primary{background:#176b4d!important;color:#fff!important}.footer{background:#fff!important;border-top-color:#d4e1da!important}.footer-brand{color:#123126!important}.footer h4{color:#39745c!important}.footer a,.footer p{color:#60736b!important}.copyright{border-top-color:#d4e1da!important}
+@media(max-width:800px){.hero{background:linear-gradient(180deg,rgba(5,30,22,.97),rgba(7,45,32,.78)),url('assets/offshore-bg.jpg') center/cover!important;min-height:720px!important}.hero h1{font-size:68px!important}.demo-card{box-shadow:10px 10px 0 #0b2b21!important}.login-box{box-shadow:8px 8px 0 #0b2b21!important}.navcta{font-size:9px!important}}
+`;
+    document.head.appendChild(s);
+  }
+})();
