@@ -94,5 +94,6 @@ function createCompany(){window.location.href='register.html'}
 async function resendConfirmation(){const email=document.getElementById('email').value.trim();if(!email){alert('Enter your email address first.');return}const {error}=await window.skyeSupabase.auth.resend({type:'signup',email,options:{emailRedirectTo:'https://geeskye.github.io/skye-hse-copilot/index.html'}});if(error){alert(error.message||'Unable to resend confirmation email.');return}alert('A fresh confirmation email has been sent. Check your inbox.')}
 </script>
 <script src="auth.js?v=20260810-9"></script>
+<script src="auth.js"></script>
 </body>
 </html>
