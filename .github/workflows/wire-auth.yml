@@ -24,10 +24,19 @@ jobs:
                   text = text.replace('</body>', f'{tag}\n</body>')
                   p.write_text(text)
           PY
-      - name: Commit auth wiring
+      - name: Fix knowledge search relevance display
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('dashboard.html')
+          text = p.read_text()
+          text = text.replace('Number(x.rank||0).toFixed(2)', 'Number(x.relevance||0).toFixed(2)')
+          p.write_text(text)
+          PY
+      - name: Commit auth and dashboard wiring
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html register.html
-          git diff --cached --quiet || git commit -m 'Wire SKYE pages to Supabase auth runtime'
+          git add index.html register.html dashboard.html
+          git diff --cached --quiet || git commit -m 'Fix knowledge search relevance display'
           git push
